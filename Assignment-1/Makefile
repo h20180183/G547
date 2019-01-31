@@ -5,7 +5,6 @@ all:
 
 insert: assign_1.ko
 	sudo insmod assign_1.ko
-	sudo chmod 777 /dev/adxl_x /dev/adxl_y /dev/adxl_z
 
 remove: assign_1.ko
 	sudo rmmod assign_1.ko

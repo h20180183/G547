@@ -15,6 +15,12 @@ static struct cdev* cdev_ptr;
 
 static char* device_names[3] = {"adxl_x","adxl_y","adxl_z"};
 
+static int perm_uevent(struct device* dev,struct kobj_uevent_env* env)
+{
+  add_uevent_var(env,"DEVMODE=%#o",0666);
+  return 0;
+}
+
 static int open_func(struct inode* i,struct file* filp)
 {
  printk(KERN_INFO"Open()\n");
@@ -75,6 +81,7 @@ if ((adxl_axes = class_create(THIS_MODULE,"adxl_axes"))==NULL)
  return -1;
 }
 printk(KERN_INFO"Class created\n");
+adxl_axes->dev_uevent = perm_uevent;
 for (i =0;i<=2;i++)
 {
  if (device_create(adxl_axes,NULL,MKDEV(MAJOR(device_num),MINOR(device_num)+i),NULL,device_names[i])==NULL)
