@@ -15,6 +15,7 @@ static struct cdev* cdev_ptr;
 
 static char* device_names[3] = {"adxl_x","adxl_y","adxl_z"};
 
+// This function is used to change the permissions of the device files created
 static int perm_uevent(struct device* dev,struct kobj_uevent_env* env)
 {
   add_uevent_var(env,"DEVMODE=%#o",0666);
@@ -36,14 +37,19 @@ static int close_func(struct inode* i, struct file* filp)
 static ssize_t read_func(struct file* filp, char __user *buf,size_t s,loff_t* t)
 {
   static int i;
-  get_random_bytes(&i,2);
-  i &= (0x03ff);
- if(copy_to_user(buf,&i,4))
- {
-  printk(KERN_INFO"Read action failed\n");
-  return -EFAULT;
- }
- printk(KERN_INFO"Read action is done");
+  int j =0;
+  // random values for each axis is generated and placed in the user buffer in the order X , Y , Z;
+  for(j=0;j<=2;j++)
+  {
+   get_random_bytes(&i,2);
+   i &= (0x03ff);
+   if(copy_to_user(buf+(4*j),&i,4))
+   {
+    printk(KERN_INFO"Read action failed\n");
+    return -EFAULT;
+   }
+  }
+  printk(KERN_INFO"Read action of all the three axes is done");
  return s;
 }
 
