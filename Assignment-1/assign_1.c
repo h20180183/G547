@@ -37,19 +37,14 @@ static int close_func(struct inode* i, struct file* filp)
 static ssize_t read_func(struct file* filp, char __user *buf,size_t s,loff_t* t)
 {
   static int i;
-  int j =0;
-  // random values for each axis is generated and placed in the user buffer in the order X , Y , Z;
-  for(j=0;j<=2;j++)
-  {
    get_random_bytes(&i,2);
    i &= (0x03ff);
-   if(copy_to_user(buf+(4*j),&i,4))
+   if(copy_to_user(buf,&i,4))
    {
     printk(KERN_INFO"Read action failed\n");
     return -EFAULT;
    }
-  }
-  printk(KERN_INFO"Read action of all the three axes is done");
+  printk(KERN_INFO"Read action is done");
  return s;
 }
 
