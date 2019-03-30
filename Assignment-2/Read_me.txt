@@ -1,5 +1,7 @@
 INSTRUCTIONS:
 
+KERNEL_VERSION USED 4.15.0.46
+
 -- Create a text file that you wish to link to the device and copy paste the path in FILE_PATH macro defined int the begining
    of the block_driver.c(main code)
 -- "sudo fdisk -l /dev/dof" - Disk info and partition info.
