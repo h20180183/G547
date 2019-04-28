@@ -381,7 +381,6 @@ static void dev_disconnect(struct usb_interface* intf)
   del_gendisk(device->gd);
   unregister_blkdev(major,DEV_NAME);
   kfree(device);
-  flush_scheduled_work();
   printk(KERN_INFO"Block device unregistered successfully\n");
   printk(KERN_INFO"Device disconnected\n");
 }
